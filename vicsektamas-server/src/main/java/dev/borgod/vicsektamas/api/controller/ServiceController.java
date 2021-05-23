@@ -1,6 +1,7 @@
 package dev.borgod.vicsektamas.api.controller;
 
-import org.modelmapper.ModelMapper;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.borgod.vicsektamas.api.dto.ServiceDTO;
-import dev.borgod.vicsektamas.model.Service;
+import dev.borgod.vicsektamas.api.mapper.ServiceMapper;
+import dev.borgod.vicsektamas.exception.ResourceNotFoundException;
 import dev.borgod.vicsektamas.repo.ServiceRepo;
 
 @RestController
@@ -20,24 +22,24 @@ public class ServiceController {
     private ServiceRepo serviceRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ServiceMapper serviceMapper;
 
     @GetMapping("/api/service/{id}")
     public ServiceDTO getServiceById(@PathVariable Long id) {
-        var service = serviceRepo.findById(id);
-        return modelMapper.map(service, ServiceDTO.class);
+        var service = serviceRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return serviceMapper.createDTO(service);
     }
 
     @GetMapping("/api/service/{title}}")
-    public ServiceDTO getServiceByTitle(@PathVariable String title) {
-        var service = serviceRepo.findByTitle(title);
-        return modelMapper.map(service, ServiceDTO.class);
+    public List<ServiceDTO> getServiceByTitle(@PathVariable String title) {
+        var services = serviceRepo.findByTitle(title);
+        return serviceMapper.createDTOList(services);
     }
 
     @PostMapping("/api/service")
     public ServiceDTO createService(ServiceDTO dto) {
-        var service = serviceRepo.save(modelMapper.map(dto, Service.class));
-        return modelMapper.map(service, ServiceDTO.class);
+        var service = serviceRepo.save(serviceMapper.createModel(dto));
+        return serviceMapper.createDTO(service);
     }
 
     @PutMapping("/api/service")
