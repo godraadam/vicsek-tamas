@@ -1,4 +1,4 @@
-package dev.borgod.vicsektamas.dto;
+package dev.borgod.vicsektamas.api.dto;
 
 import dev.borgod.vicsektamas.model.Role;
 import lombok.Getter;

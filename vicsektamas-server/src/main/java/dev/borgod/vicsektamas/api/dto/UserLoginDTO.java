@@ -1,4 +1,4 @@
-package dev.borgod.vicsektamas.dto;
+package dev.borgod.vicsektamas.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;

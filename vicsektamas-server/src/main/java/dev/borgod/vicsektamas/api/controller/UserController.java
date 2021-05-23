@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.borgod.vicsektamas.dto.UserDTO;
-import dev.borgod.vicsektamas.dto.UserLoginDTO;
-import dev.borgod.vicsektamas.dto.UserRegisterDTO;
+import dev.borgod.vicsektamas.api.dto.UserDTO;
+import dev.borgod.vicsektamas.api.dto.UserLoginDTO;
+import dev.borgod.vicsektamas.api.dto.UserRegisterDTO;
 import dev.borgod.vicsektamas.exception.UserNotFoundException;
 import dev.borgod.vicsektamas.model.AppUser;
 import dev.borgod.vicsektamas.repo.UserRepo;
@@ -52,4 +52,6 @@ public class UserController {
         var user = userService.registerUser(modelMapper.map(dto, AppUser.class));
         return modelMapper.map(user, UserDTO.class);
     }
+
+
 }
