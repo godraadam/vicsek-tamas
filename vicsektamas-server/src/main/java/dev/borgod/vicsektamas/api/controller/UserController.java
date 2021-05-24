@@ -3,9 +3,11 @@ package dev.borgod.vicsektamas.api.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +53,25 @@ public class UserController {
     public UserDTO register(@RequestBody UserRegisterDTO dto) {
         var user = userService.registerUser(modelMapper.map(dto, AppUser.class));
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    @DeleteMapping("/admin/api/user/ban/{id}")
+    public void banUser(@PathVariable Long id) {
+        userRepo.deleteById(id);
+    }
+
+    @PutMapping("/admin/api/user/verify-email/{id}") 
+    public UserDTO verifyUserEmail(@PathVariable Long id) {
+        var user = userRepo.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setEmailVerified(true);
+        return modelMapper.map(userRepo.save(user), UserDTO.class);
+    }
+
+    @PutMapping("/admin/api/user/verify-phone/{id}") 
+    public UserDTO verifyUserPhone(@PathVariable Long id) {
+        var user = userRepo.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setPhoneNumberVerified(true);
+        return modelMapper.map(userRepo.save(user), UserDTO.class);
     }
 
 
