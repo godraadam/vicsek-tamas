@@ -8,6 +8,7 @@ import dev.borgod.vicsektamas.exception.IncorrectCredentialsException;
 import dev.borgod.vicsektamas.exception.UserAlreadyExistsException;
 import dev.borgod.vicsektamas.exception.UserNotFoundException;
 import dev.borgod.vicsektamas.model.AppUser;
+import dev.borgod.vicsektamas.model.Role;
 import dev.borgod.vicsektamas.repo.UserRepo;
 
 @Service
@@ -24,8 +25,10 @@ public class UserService {
             throw new UserAlreadyExistsException();
         }
         userToRegister.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
+        userToRegister.setRole(Role.CUSTOMER);
         return userRepo.save(userToRegister);
     }
+    
 
     public boolean canRegister(AppUser userToRegister) {
         return userRepo.findByUsername(userToRegister.getUsername()).isEmpty()

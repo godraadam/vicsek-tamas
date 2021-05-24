@@ -1,6 +1,8 @@
 package dev.borgod.vicsektamas.api.controller;
 
+import java.util.Collections;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.borgod.vicsektamas.api.dto.ServiceDTO;
@@ -24,6 +27,7 @@ public class ServiceController {
     @Autowired
     private ServiceMapper serviceMapper;
 
+
     @GetMapping("/api/service/{id}")
     public ServiceDTO getServiceById(@PathVariable Long id) {
         var service = serviceRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -37,14 +41,16 @@ public class ServiceController {
     }
 
     @PostMapping("/manager/api/service")
-    public ServiceDTO createService(ServiceDTO dto) {
-        var service = serviceRepo.save(serviceMapper.createModel(dto));
-        return serviceMapper.createDTO(service);
+    public ServiceDTO createService(@RequestBody ServiceDTO dto) {
+        var service = serviceMapper.createModel(dto);
+        service.setTimeTables(Collections.emptyList());
+        service.setReservations(Collections.emptyList());
+        return serviceMapper.createDTO(serviceRepo.save(service));
     }
 
     @PutMapping("/manager/api/service")
-    public ServiceDTO editService(ServiceDTO dto) {
-        return createService(dto);
+    public ServiceDTO editService(@RequestBody ServiceDTO dto) {
+        return serviceMapper.createDTO(serviceRepo.save(serviceMapper.createModel(dto)));
     }
 
     @DeleteMapping("/manager/api/service/{id}")

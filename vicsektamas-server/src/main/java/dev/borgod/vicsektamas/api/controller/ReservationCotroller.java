@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.borgod.vicsektamas.api.dto.ReservationDTO;
 import dev.borgod.vicsektamas.api.mapper.ReservationMapper;
+import dev.borgod.vicsektamas.exception.IncorrectCredentialsException;
 import dev.borgod.vicsektamas.exception.ResourceNotFoundException;
 import dev.borgod.vicsektamas.repo.ReservationRepo;
 
@@ -49,8 +50,11 @@ public class ReservationCotroller {
         return reservationMapper.createDTO(reservationRepo.save(newReservation));
     }
 
-    @DeleteMapping("/api/reservation/{id}")
-    public void cancelReservation(@PathVariable Long id) {
-        reservationRepo.deleteById(id);
+    @DeleteMapping("/api/reservation/cancel/{userId}/{reservationId}")
+    public void cancelReservation(@PathVariable Long userId, @PathVariable Long reservationId) {
+        if (!reservationRepo.findById(reservationId).orElseThrow(ResourceNotFoundException::new).getCustomer().getId().equals(userId)) {
+            throw new IncorrectCredentialsException();
+        }
+        reservationRepo.deleteById(reservationId);
     }
 }

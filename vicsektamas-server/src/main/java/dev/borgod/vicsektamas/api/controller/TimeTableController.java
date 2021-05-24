@@ -38,13 +38,10 @@ public class TimeTableController {
         return timeTableMapper.createDTO(serviceRepo.findById(id).orElseThrow(ResourceNotFoundException::new).getActiveTimeTable());
     }
 
-    @PostMapping("/manager/api/timetable/service/{id}")
-    public TimeTableDTO createTimeTableForService(@PathVariable Long id, @RequestBody TimeTableDTO dto) {
-        var service = serviceRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
-        var timeTable = timeTableMapper.createModel(dto);
-        service.getTimeTables().add(timeTable);
-        serviceRepo.save(service);
-        return timeTableMapper.createDTO(timeTableRepo.save(timeTable));
+    @PostMapping("/manager/api/timetable")
+    public TimeTableDTO createTimeTableForService(@RequestBody TimeTableDTO dto) {
+        var timeTable = timeTableRepo.save(timeTableMapper.createModel(dto));
+        return timeTableMapper.createDTO(timeTable);
 
     }
 

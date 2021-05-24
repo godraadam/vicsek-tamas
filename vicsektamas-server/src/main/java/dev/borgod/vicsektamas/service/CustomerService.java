@@ -23,7 +23,7 @@ public class CustomerService {
         if (customer == null) return null;
         customer.setRole(Role.CUSTOMER);
         customer.setReservations(Collections.emptyList());
-        return customer;
+        return customerRepo.save(customer);
     }
 
     

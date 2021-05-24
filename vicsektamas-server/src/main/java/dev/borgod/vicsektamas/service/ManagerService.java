@@ -1,5 +1,7 @@
 package dev.borgod.vicsektamas.service;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -8,16 +10,12 @@ import dev.borgod.vicsektamas.exception.IncorrectCredentialsException;
 import dev.borgod.vicsektamas.exception.UserAlreadyExistsException;
 import dev.borgod.vicsektamas.model.Manager;
 import dev.borgod.vicsektamas.model.RegistrationToken;
+import dev.borgod.vicsektamas.model.Role;
 import dev.borgod.vicsektamas.repo.ManagerRepo;
-import dev.borgod.vicsektamas.repo.TokenRepo;
-import dev.borgod.vicsektamas.repo.UserRepo;
 
 @Service
 public class ManagerService {
     
-
-    @Autowired
-    private UserRepo userRepo;
     
     @Autowired
     private ManagerRepo managerRepo;
@@ -39,6 +37,9 @@ public class ManagerService {
             throw new IncorrectCredentialsException();
         }
         manager.setPassword(passwordEncoder.encode(manager.getPassword()));
+        manager.setRole(Role.MANAGER);
+        manager.setServices(Collections.emptyList());
+        tokenService.consumeToken(token.getToken());
         return managerRepo.save(manager);
     }
 

@@ -47,7 +47,7 @@ public class UserController {
         return modelMapper.map(user, UserDTO.class);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register/user")
     public UserDTO register(@RequestBody UserRegisterDTO dto) {
         var user = userService.registerUser(modelMapper.map(dto, AppUser.class));
         return modelMapper.map(user, UserDTO.class);

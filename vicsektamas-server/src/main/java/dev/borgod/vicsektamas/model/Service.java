@@ -6,7 +6,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -35,7 +34,7 @@ public class Service extends BaseModel {
     @OneToMany(mappedBy = "service")
     private List<Reservation> reservations;
 
-    @OneToOne @MapsId
+    @OneToOne(optional = true)
     private TimeTable activeTimeTable;
 
 }

@@ -32,10 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
             .authorizeRequests()
             .antMatchers("/login").permitAll()
-            .antMatchers("register").permitAll()
+            .antMatchers("/register/**").permitAll()
             .antMatchers("/api/**").hasAnyRole(Role.MANAGER.toString(), Role.ADMIN.toString(), Role.CUSTOMER.toString())
             .antMatchers("/manager/api/**").hasAnyRole(Role.MANAGER.toString(), Role.ADMIN.toString())
-            .antMatchers("admin/api/**").hasRole(Role.ADMIN.toString())
+            .antMatchers("/admin/api/**").hasRole(Role.ADMIN.toString())
             .anyRequest().authenticated().and()
             .httpBasic();
     }

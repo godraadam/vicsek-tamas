@@ -1,6 +1,8 @@
 package dev.borgod.vicsektamas.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
@@ -22,5 +24,6 @@ public class AppUser extends BaseModel {
 
     private boolean emailVerified;
     private boolean phoneNumberVerified;
+    @Enumerated(EnumType.STRING)
     private Role role;
 }

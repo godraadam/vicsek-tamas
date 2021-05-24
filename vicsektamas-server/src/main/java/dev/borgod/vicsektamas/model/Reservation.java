@@ -18,7 +18,7 @@ public class Reservation extends BaseModel {
     
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+    private AppUser customer;
 
     @ManyToOne
     @JoinColumn(name = "SERVICE_ID")
