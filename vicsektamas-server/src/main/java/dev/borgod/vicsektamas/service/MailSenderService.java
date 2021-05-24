@@ -6,9 +6,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import dev.borgod.vicsektamas.model.Reservation;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 @Service
-public class MailSenderService implements MadeReservationListener {
+@Log4j2
+@Getter
+public class MailSenderService implements MadeReservationListener, CommunicationService {
 
     @Autowired
     private JavaMailSender jms;
@@ -23,7 +27,14 @@ public class MailSenderService implements MadeReservationListener {
         msg.setText("Thank you for using our service! Your reservation for " + reservation.getService().getTitle()
                 + " has been succesfully created from " + reservation.getStartDateTime() + " to "
                 + reservation.getEndDateTime() + "! have a great time!");
-        jms.send(msg);
+        //jms.send(msg);
+        log.info("Mail was sent to " + reservation.getCustomer().getEmail());
+    }
+
+    @Override
+    public void accept(CommunicationServiceVisitor csv) {
+        csv.visit(this);
+        
     }
 
 }

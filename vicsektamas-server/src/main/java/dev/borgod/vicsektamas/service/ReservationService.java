@@ -1,5 +1,6 @@
 package dev.borgod.vicsektamas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,12 +17,13 @@ public class ReservationService {
     @Autowired
     private ReservationRepo reservationRepo;
 
-    
     @PostConstruct
     public void init() {
-        addListener(new MessageSenderService());
+        listeners = new ArrayList<>();
         addListener(new MailSenderService());
+        addListener(new MessageSenderService());
     }
+
 
     private List<MadeReservationListener> listeners;
 
