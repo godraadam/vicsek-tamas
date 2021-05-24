@@ -36,18 +36,18 @@ public class ServiceController {
         return serviceMapper.createDTOList(services);
     }
 
-    @PostMapping("/api/service")
+    @PostMapping("/manager/api/service")
     public ServiceDTO createService(ServiceDTO dto) {
         var service = serviceRepo.save(serviceMapper.createModel(dto));
         return serviceMapper.createDTO(service);
     }
 
-    @PutMapping("/api/service")
+    @PutMapping("/manager/api/service")
     public ServiceDTO editService(ServiceDTO dto) {
         return createService(dto);
     }
 
-    @DeleteMapping("/api/service/{id}")
+    @DeleteMapping("/manager/api/service/{id}")
     public void deleteServiceById(@PathVariable Long id) {
         serviceRepo.deleteById(id);
     }

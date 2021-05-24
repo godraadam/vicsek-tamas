@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import dev.borgod.vicsektamas.model.Role;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -29,8 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .authorizeRequests()
-            .anyRequest()
-            .permitAll();
+            .antMatchers("/login").permitAll()
+            .antMatchers("register").permitAll()
+            .antMatchers("/api/**").hasAnyRole(Role.MANAGER.toString(), Role.ADMIN.toString(), Role.CUSTOMER.toString())
+            .antMatchers("/manager/api/**").hasAnyRole(Role.MANAGER.toString(), Role.ADMIN.toString())
+            .antMatchers("admin/api/**").hasRole(Role.ADMIN.toString())
+            .anyRequest().authenticated().and()
+            .httpBasic();
     }
 
     

@@ -27,7 +27,7 @@ public class UserService {
         return userRepo.save(userToRegister);
     }
 
-    private boolean canRegister(AppUser userToRegister) {
+    public boolean canRegister(AppUser userToRegister) {
         return userRepo.findByUsername(userToRegister.getUsername()).isEmpty()
                 && userRepo.findByEmail(userToRegister.getEmail()).isEmpty();
 

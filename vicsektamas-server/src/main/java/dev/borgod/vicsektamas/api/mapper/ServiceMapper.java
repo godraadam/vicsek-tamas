@@ -14,12 +14,16 @@ public class ServiceMapper implements GeneralMapper<ServiceDTO, Service> {
     private ModelMapper modelMapper;
 
     @Autowired
+    private ReservationMapper reservationMapper;
+
+    @Autowired
     private ManagerRepo managerRepo;
 
     @Override
     public ServiceDTO createDTO(Service model) {
         var dto = modelMapper.map(model, ServiceDTO.class);
         dto.setOwnerId(model.getOwner().getId());
+        dto.setReservations(reservationMapper.createDTOList(model.getReservations()));
         return dto;
     }
 
@@ -27,6 +31,7 @@ public class ServiceMapper implements GeneralMapper<ServiceDTO, Service> {
     public Service createModel(ServiceDTO dto) {
         var model = modelMapper.map(dto, Service.class);
         model.setOwner(managerRepo.findById(dto.getOwnerId()).orElseThrow(ResourceNotFoundException::new));
+        model.setReservations(reservationMapper.createModelList(dto.getReservations()));
         return model;
     }
     

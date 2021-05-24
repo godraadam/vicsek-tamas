@@ -18,4 +18,5 @@ public class Manager extends AppUser {
     @OneToMany(mappedBy = "owner")
     private List<Service> services;
 
+
 }

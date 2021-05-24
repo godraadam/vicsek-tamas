@@ -2,7 +2,6 @@ package dev.borgod.vicsektamas.api.dto;
 
 import java.util.List;
 
-import dev.borgod.vicsektamas.model.Reservation;
 import dev.borgod.vicsektamas.model.TimeTable;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +13,5 @@ public class ServiceDTO {
     private String description;
     private Long ownerId;
     private TimeTable activeTimeTable;
-    private List<Reservation> reservations;
+    private List<ReservationDTO> reservations;
 }
