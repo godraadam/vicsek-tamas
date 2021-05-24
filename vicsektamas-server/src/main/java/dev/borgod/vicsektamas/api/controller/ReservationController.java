@@ -16,12 +16,16 @@ import dev.borgod.vicsektamas.api.mapper.ReservationMapper;
 import dev.borgod.vicsektamas.exception.IncorrectCredentialsException;
 import dev.borgod.vicsektamas.exception.ResourceNotFoundException;
 import dev.borgod.vicsektamas.repo.ReservationRepo;
+import dev.borgod.vicsektamas.service.ReservationService;
 
 @RestController
-public class ReservationCotroller {
+public class ReservationController {
 
     @Autowired
     private ReservationRepo reservationRepo;
+
+    @Autowired
+    private ReservationService reservationService;
 
 
     @Autowired
@@ -39,7 +43,7 @@ public class ReservationCotroller {
 
     @PostMapping("/api/reservation")
     public ReservationDTO makeReservation(@RequestBody ReservationDTO dto) {
-        return reservationMapper.createDTO(reservationRepo.save(reservationMapper.createModel(dto)));
+        return reservationMapper.createDTO(reservationService.saveReservation(reservationMapper.createModel(dto)));
     }
 
     @PutMapping("/api/reservation/{id}")
